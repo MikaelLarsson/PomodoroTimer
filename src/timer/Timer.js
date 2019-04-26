@@ -50,11 +50,13 @@ class Timer extends React.Component {
     render() {
         const time = this.state.time;
         const clock = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+        const { timerRunning } = this.state;
         return (
             <div>
                 <p>{ clock }</p>
-                <button onClick={this.pauseTimer} disabled={!this.state.timerRunning}>Pause</button>&nbsp;
-                <button onClick={this.startTimer} disabled={this.state.timerRunning}>Play</button>&nbsp;
+                <button onClick={timerRunning ? this.pauseTimer : this.startTimer}>
+                    { timerRunning ? 'Pause' : 'Play'}
+                </button>&nbsp;
                 <button onClick={this.resetTime}>Reset</button>
             </div>
         );
