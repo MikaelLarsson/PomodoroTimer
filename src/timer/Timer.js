@@ -1,31 +1,47 @@
 import React from 'react';
 
-const defaultState = {
-    hours: 0,
-    minutes: 25,
-    seconds: 5
-}
-
 class Timer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = defaultState;
+        this.state = {
+            time: this.setTime()
+        };
+    }
+    setTime() {
+        const time = new Date();
+        time.setHours(0);
+        time.setMinutes(25);
+        time.setSeconds(0);
+        return time;
     }
     componentDidMount() {
-        this.timerId = setInterval(this.countDown, 1000);
+        this.pomodoro = setInterval(this.countDown, 1000);
     }
     countDown = () => {
-        if(this.state.seconds > 0) {
-            const seconds = this.state.seconds - 1;
-            this.setState({ seconds });
+        const time = this.state.time;
+        if (!this.counterIsFinished(time)) {
+            time.setSeconds(time.getSeconds() -1);
+            this.setState({ time });
         } else {
-            // clearInterval(this.timerId);
-            this.setState(defaultState);
+            this.resetTime();
+            clearInterval(this.pomodoro);
         }
     }
+    counterIsFinished = time => {
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+        const seconds = time.getSeconds();
+        if (seconds === 0 && minutes === 0 && hours === 0) {
+            return true;
+        }
+    }
+    resetTime = () => {
+        const time = this.setTime();
+        this.setState({ time });
+    }
     render() {
-        const { hours, minutes, seconds } = this.state;
-        const clock = `${hours}:${minutes}:${seconds}`;
+        const time = this.state.time;
+        const clock = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
         return (
             <p>{ clock }</p>
         );
