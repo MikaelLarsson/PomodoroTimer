@@ -1,4 +1,5 @@
 import React from 'react';
+import minidaemon from '../libs/minidaemon.js/minidaemon';
 
 class Timer extends React.Component {
     constructor(props) {
@@ -7,23 +8,23 @@ class Timer extends React.Component {
             timerRunning: false,
             time: this.setTime()
         };
+        // this.minidaemon = minidaemon;
     }
     setTime() {
         const time = new Date();
         time.setHours(0);
-        time.setMinutes(0);
-        time.setSeconds(3);
+        time.setMinutes(25);
+        time.setSeconds(0);
         return time;
-    }
-    componentDidMount() {
-        this.startTimer();
     }
     startTimer = () => {
         this.pomodoro = setInterval(this.timer, 1000);
         this.setState({ timerRunning: true });
+
+        // Start daemon
     }
     timer = () => {
-        if (!this.counterIsFinished()) {
+        if (!this.isCounterFinished()) {
             const time = this.state.time;
             time.setSeconds(time.getSeconds() -1);
             this.setState({ time });
@@ -41,7 +42,7 @@ class Timer extends React.Component {
         clearInterval(this.pomodoro);
         this.setState({ timerRunning: false });
     }
-    counterIsFinished = () => {
+    isCounterFinished = () => {
         const hours = this.state.time.getHours();
         const minutes = this.state.time.getMinutes();
         const seconds = this.state.time.getSeconds();
