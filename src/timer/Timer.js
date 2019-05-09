@@ -1,5 +1,4 @@
 import React from 'react';
-import minidaemon from '../libs/minidaemon.js/minidaemon';
 
 class Timer extends React.Component {
     constructor(props) {
@@ -8,7 +7,20 @@ class Timer extends React.Component {
             timerRunning: false,
             time: this.setTime()
         };
-        // this.minidaemon = minidaemon;
+    }
+    render() {
+        const time = this.state.time;
+        const clock = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+        const { timerRunning } = this.state;
+        return (
+            <div>
+                <p>{ clock }</p>
+                <button onClick={timerRunning ? this.pauseTimer : this.startTimer}>
+                    { timerRunning ? 'Pause' : 'Play'}
+                </button>&nbsp;
+                <button onClick={this.resetTime}>Reset</button>
+            </div>
+        );
     }
     setTime() {
         const time = new Date();
@@ -20,8 +32,6 @@ class Timer extends React.Component {
     startTimer = () => {
         this.pomodoro = setInterval(this.timer, 1000);
         this.setState({ timerRunning: true });
-
-        // Start daemon
     }
     timer = () => {
         if (!this.isCounterFinished()) {
@@ -47,20 +57,6 @@ class Timer extends React.Component {
         const minutes = this.state.time.getMinutes();
         const seconds = this.state.time.getSeconds();
         return seconds === 0 && minutes === 0 && hours === 0;
-    }
-    render() {
-        const time = this.state.time;
-        const clock = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-        const { timerRunning } = this.state;
-        return (
-            <div>
-                <p>{ clock }</p>
-                <button onClick={timerRunning ? this.pauseTimer : this.startTimer}>
-                    { timerRunning ? 'Pause' : 'Play'}
-                </button>&nbsp;
-                <button onClick={this.resetTime}>Reset</button>
-            </div>
-        );
     }
 }
 
