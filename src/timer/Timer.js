@@ -1,37 +1,87 @@
 import React from 'react';
+import { Clock } from './Clock';
+
+const CONSTS = {
+    POMODORO_TIMEBLOCK: {
+        HOURS: 0,
+        MINUTES: 0,
+        SECONDS: 25
+    },
+    BREAK_TIMEBLOCK: {
+        HOURS: 0,
+        MINUTES: 0,
+        SECONDS: 5
+    },
+    SET_LENGTH: 2,
+    SET_BREAK_TIMEBLOCK:  {
+        HOURS: 0,
+        MINUTES: 0,
+        SECONDS: 15
+    }
+}
 
 class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             timerRunning: false,
-            time: this.setTime()
+            time: this.getStartTime(),
+            isBreak: false,
+            pomodoro: 1
         };
     }
     render() {
         const time = this.state.time;
-        const clock = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-        const { timerRunning } = this.state;
-        return (
-            <div>
-                <p>{ clock }</p>
-                <button onClick={timerRunning ? this.pauseTimer : this.startTimer}>
-                    { timerRunning ? 'Pause' : 'Play'}
-                </button>&nbsp;
-                <button onClick={this.resetTime}>Reset</button>
-            </div>
-        );
+        const clock = this.formatClock(time);
+        const timer = {
+            time: clock,
+            isRunning: this.state.timerRunning,
+            start: this.startTimer,
+            pause: this.pauseTimer,
+            reset: this.handleReset,
+            isBreak: this.state.isBreak,
+            skipBreak: this.skipBreak
+        }
+        console.log('POMODORO', this.state.pomodoro);
+        return <Clock timer={ timer } />;
     }
-    setTime() {
+    skipBreak = () => {
+        this.pauseTimer();
+        this.setState({ isBreak: false });
+        this.initTimer();
+    }
+    formatClock(time) {
+        return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+    }
+    getStartTime() {
         const time = new Date();
-        time.setHours(0);
-        time.setMinutes(25);
-        time.setSeconds(0);
+        time.setHours(CONSTS.POMODORO_TIMEBLOCK.HOURS);
+        time.setMinutes(CONSTS.POMODORO_TIMEBLOCK.MINUTES);
+        time.setSeconds(CONSTS.POMODORO_TIMEBLOCK.SECONDS);
         return time;
+    }
+    /**
+     * @todo Fix set length
+     */
+    initTimer = () => {
+        const time = this.getStartTime();
+        let pomodoro = 0;
+        if (this.isCounterFinished && pomodoro < CONSTS.SET_LENGTH) {
+            pomodoro = this.state.pomodoro + 1;
+        }
+        this.setState({
+            time,
+            isBreak: false,
+            pomodoro
+        });
     }
     startTimer = () => {
         this.pomodoro = setInterval(this.timer, 1000);
         this.setState({ timerRunning: true });
+    }
+    pauseTimer = () => {
+        clearInterval(this.pomodoro);
+        this.setState({ timerRunning: false });
     }
     timer = () => {
         if (!this.isCounterFinished()) {
@@ -39,24 +89,43 @@ class Timer extends React.Component {
             time.setSeconds(time.getSeconds() -1);
             this.setState({ time });
         } else {
-            this.resetTime();
-            
+            this.pauseTimer();
+            if (this.state.isBreak) {
+                this.initTimer();
+            } else {
+                this.initBreak();
+            }
         }
     }
     resetTime = () => {
-        const time = this.setTime();
-        this.setState({ time });
-        this.pauseTimer();
+        const time = this.getStartTime();
+        this.setState({
+            time,
+            isBreak: false
+        });
     }
-    pauseTimer = () => {
-        clearInterval(this.pomodoro);
-        this.setState({ timerRunning: false });
+    handleReset = () => {
+        this.pauseTimer();
+        this.resetTime();
     }
     isCounterFinished = () => {
         const hours = this.state.time.getHours();
         const minutes = this.state.time.getMinutes();
         const seconds = this.state.time.getSeconds();
         return seconds === 0 && minutes === 0 && hours === 0;
+    }
+    initBreak = () => {
+        const time = new Date();
+        if (this.state.pomodoro < CONSTS.SET_LENGTH) {
+            time.setHours(CONSTS.BREAK_TIMEBLOCK.HOURS);
+            time.setMinutes(CONSTS.BREAK_TIMEBLOCK.MINUTES);
+            time.setSeconds(CONSTS.BREAK_TIMEBLOCK.SECONDS);
+        } else {
+            time.setHours(CONSTS.SET_BREAK_TIMEBLOCK.HOURS);
+            time.setMinutes(CONSTS.SET_BREAK_TIMEBLOCK.MINUTES);
+            time.setSeconds(CONSTS.SET_BREAK_TIMEBLOCK.SECONDS);
+        }
+        this.setState({ time, isBreak: true });
     }
 }
 
