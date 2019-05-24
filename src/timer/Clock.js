@@ -1,3 +1,7 @@
+/** 
+ * @todo Move all logic to Timer.js
+ */
+
 import React from 'react';
 
 export const Clock = props => {

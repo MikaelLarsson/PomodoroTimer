@@ -1,3 +1,8 @@
+/**
+ * @todo Abstract timer into its own file
+ * @todo Reset pomodoro counter after each set
+ */
+
 import React from 'react';
 import { Clock } from './Clock';
 
@@ -48,7 +53,7 @@ class Timer extends React.Component {
     skipBreak = () => {
         this.pauseTimer();
         this.setState({ isBreak: false });
-        this.initTimer();
+        this.initPomodoro();
     }
     formatClock(time) {
         return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
@@ -60,13 +65,10 @@ class Timer extends React.Component {
         time.setSeconds(CONSTS.POMODORO_TIMEBLOCK.SECONDS);
         return time;
     }
-    /**
-     * @todo Fix set length
-     */
-    initTimer = () => {
+    initPomodoro = () => {
         const time = this.getStartTime();
         let pomodoro = 0;
-        if (this.isCounterFinished && pomodoro < CONSTS.SET_LENGTH) {
+        if (this.isTimerFinished && pomodoro < CONSTS.SET_LENGTH) {
             pomodoro = this.state.pomodoro + 1;
         }
         this.setState({
@@ -84,14 +86,14 @@ class Timer extends React.Component {
         this.setState({ timerRunning: false });
     }
     timer = () => {
-        if (!this.isCounterFinished()) {
+        if (!this.isTimerFinished()) {
             const time = this.state.time;
             time.setSeconds(time.getSeconds() -1);
             this.setState({ time });
         } else {
             this.pauseTimer();
             if (this.state.isBreak) {
-                this.initTimer();
+                this.initPomodoro();
             } else {
                 this.initBreak();
             }
@@ -108,7 +110,7 @@ class Timer extends React.Component {
         this.pauseTimer();
         this.resetTime();
     }
-    isCounterFinished = () => {
+    isTimerFinished = () => {
         const hours = this.state.time.getHours();
         const minutes = this.state.time.getMinutes();
         const seconds = this.state.time.getSeconds();
