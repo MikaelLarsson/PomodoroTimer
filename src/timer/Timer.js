@@ -6,6 +6,8 @@
 import React from 'react';
 import { Clock } from './Clock';
 
+import './timer.scss';
+
 const CONSTS = {
     POMODORO_TIMEBLOCK: {
         HOURS: 0,
