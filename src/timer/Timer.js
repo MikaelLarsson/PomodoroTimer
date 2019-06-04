@@ -22,7 +22,14 @@ class Timer extends React.Component {
             handleResetButtonClick: this.state.timerRunning ? this.handleReset : this.skipBreak,
             resetButtonText: this.state.isBreak ? 'Skip' : 'Reset'
         }
-        return <Clock timer={ timer } />;
+        return (
+            <>
+                <Clock timer={ timer } />
+                
+                {/* Bell sound */}
+                { this.state.isBreak && <audio src="assets/bell.mp3" autoPlay /> }
+            </>
+        );
     }
     skipBreak = () => {
         this.pauseTimer();
