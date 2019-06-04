@@ -41,12 +41,10 @@ class Timer extends React.Component {
         const clock = this.formatClock(time);
         const timer = {
             time: clock,
-            isRunning: this.state.timerRunning,
-            start: this.startTimer,
-            pause: this.pauseTimer,
-            reset: this.handleReset,
-            isBreak: this.state.isBreak,
-            skipBreak: this.skipBreak
+            handlePlayButtonClick: this.state.timerRunning ? this.pauseTimer : this.startTimer,
+            playButtonText: this.state.timerRunning ? 'Pause' : 'Play',
+            handleResetButtonClick: this.state.timerRunning ? this.handleReset : this.skipBreak,
+            resetButtonText: this.state.isBreak ? 'Skip' : 'Reset'
         }
         return <Clock timer={ timer } />;
     }

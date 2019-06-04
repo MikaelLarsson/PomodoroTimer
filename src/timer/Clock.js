@@ -1,7 +1,3 @@
-/** 
- * @todo Move all logic to Timer.js
- */
-
 import React from 'react';
 
 export const Clock = props => {
@@ -12,14 +8,14 @@ export const Clock = props => {
             <p>{ timer.time }</p>
 
             {/* Play / Pause button */}
-            <button onClick={ timer.isRunning ? timer.pause : timer.start }>
-                { timer.isRunning ? 'Pause' : 'Play'}
+            <button onClick={ timer.handlePlayButtonClick }>
+                { timer.playButtonText }
             </button>&nbsp;
 
             {/* Reset button */}
-            { timer.isBreak ? 
-                <button onClick={ timer.skipBreak }>Skip</button> : 
-                <button onClick={ timer.reset }>Reset</button> }
+            <button onClick={ timer.handleResetButtonClick }>
+                { timer.resetButtonText }
+            </button>
         </div>
     );
 }
