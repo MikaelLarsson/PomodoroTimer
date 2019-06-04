@@ -1,6 +1,5 @@
 /**
  * @todo Abstract timer into its own file
- * @todo Reset pomodoro counter after each set
  */
 
 import React from 'react';
@@ -49,7 +48,6 @@ class Timer extends React.Component {
             isBreak: this.state.isBreak,
             skipBreak: this.skipBreak
         }
-        console.log('POMODORO', this.state.pomodoro);
         return <Clock timer={ timer } />;
     }
     skipBreak = () => {
@@ -68,15 +66,11 @@ class Timer extends React.Component {
         return time;
     }
     initPomodoro = () => {
-        const time = this.getStartTime();
-        let pomodoro = 0;
-        if (this.isTimerFinished && pomodoro < CONSTS.SET_LENGTH) {
-            pomodoro = this.state.pomodoro + 1;
-        }
+        const pomodoro = this.state.pomodoro;
         this.setState({
-            time,
+            time: this.getStartTime(),
             isBreak: false,
-            pomodoro
+            pomodoro: this.isTimerFinished && pomodoro < CONSTS.SET_LENGTH ? pomodoro + 1 : 1
         });
     }
     startTimer = () => {
