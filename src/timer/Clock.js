@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './timer.scss';
+
 export const Clock = props => {
     const { timer } = props;
     return (

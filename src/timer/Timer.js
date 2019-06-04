@@ -1,30 +1,6 @@
-/**
- * @todo Abstract timer into its own file
- */
-
 import React from 'react';
 import { Clock } from './Clock';
-
-import './timer.scss';
-
-const CONSTS = {
-    POMODORO_TIMEBLOCK: {
-        HOURS: 0,
-        MINUTES: 0,
-        SECONDS: 25
-    },
-    BREAK_TIMEBLOCK: {
-        HOURS: 0,
-        MINUTES: 0,
-        SECONDS: 5
-    },
-    SET_LENGTH: 2,
-    SET_BREAK_TIMEBLOCK:  {
-        HOURS: 0,
-        MINUTES: 0,
-        SECONDS: 15
-    }
-}
+import { CONSTS } from './consts';
 
 class Timer extends React.Component {
     constructor(props) {
