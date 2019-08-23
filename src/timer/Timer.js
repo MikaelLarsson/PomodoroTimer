@@ -16,6 +16,9 @@ class Timer extends React.Component {
         const time = this.state.time;
         const clock = this.formatClock(time);
         const timer = {
+            minutes: time.getMinutes(),
+            seconds: time.getSeconds(),
+            hours: time.getHours(),
             time: clock,
             handlePlayButtonClick: this.state.timerRunning ? this.pauseTimer : this.startTimer,
             playButtonText: this.state.timerRunning ? 'Pause' : 'Play',
