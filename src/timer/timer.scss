@@ -6,15 +6,23 @@ body {
     background: linear-gradient(145deg, rgba(255,55,141,1) 0%, rgba(255,157,22,1) 100%);
     font-family: 'Saira Semi Condensed', sans-serif;
 }
-.clock {
-    font-size: 6rem;
-    color: #FFF;
-    font-weight: lighter;
+.time {
+    width: 100%;
+    position: relative;
+    color: #fff;
+    font-size: 2em;
 }
 .countdown-svg {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100px;
-	height: 100px;
+    height: 400px;
+    width: 400px;
+    fill: none;
+    stroke-width: 10;
+    stroke: #fff;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
 }

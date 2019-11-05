@@ -25,14 +25,23 @@ class Timer extends React.Component {
             handleResetButtonClick: this.state.timerRunning ? this.handleReset : this.skipBreak,
             resetButtonText: this.state.isBreak ? 'Skip' : 'Reset'
         }
+        const radius = this.getRadius(this.state.time.getSeconds(), this.getMaxValue(), 0, 1, 360);
         return (
             <>
-                <Clock timer={ timer } />
+                <Clock timer={ timer } radius={ radius } />
                 
                 {/* Bell sound */}
                 { this.state.isBreak && <audio src="assets/bell.mp3" autoPlay /> }
             </>
         );
+    }
+    getMaxValue = () => {
+        let maxValue = CONSTS.POMODORO_TIMEBLOCK.SECONDS;
+        if (this.state.isBreak) {
+            if (this.state.pomodoro >= CONSTS.SET_LENGTH) maxValue = CONSTS.SET_BREAK_TIMEBLOCK.SECONDS;
+            else maxValue = CONSTS.BREAK_TIMEBLOCK.SECONDS;
+        }
+        return maxValue;
     }
     skipBreak = () => {
         this.pauseTimer();
@@ -109,6 +118,15 @@ class Timer extends React.Component {
         }
         this.setState({ time, isBreak: true });
     }
+
+    /**
+     * @param {int} currentValue Current value of the timer
+     * @param {int} inMin 
+     * @param {int} inMax 
+     * @param {int} outMin 
+     * @param {int} outMax 
+     */
+    getRadius = (currentValue, inMin, inMax, outMin, outMax) => ((currentValue - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
 export default Timer;
