@@ -19,10 +19,4 @@ body {
     stroke-width: 10;
     stroke: #fff;
     stroke-linecap: round;
-    animation: progress 1s ease-out forwards;
-}
-@keyframes progress {
-    0% {
-        stroke-dasharray: 0 100;
-    }
 }
