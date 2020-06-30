@@ -25,7 +25,7 @@ class Timer extends React.Component {
             handleResetButtonClick: this.state.timerRunning ? this.handleReset : this.skipBreak,
             resetButtonText: this.state.isBreak ? 'Skip' : 'Reset'
         }
-        const radius = this.getRadius(this.state.time.getSeconds(), this.getMaxValue(), 0, 1, 360);
+        const radius = this.getRadius(this.state.time.getSeconds(), this.getMaxValue(), 0, 0, 360);
         return (
             <>
                 <Clock timer={ timer } radius={ radius } />
@@ -126,7 +126,9 @@ class Timer extends React.Component {
      * @param {int} outMin 
      * @param {int} outMax 
      */
-    getRadius = (currentValue, inMin, inMax, outMin, outMax) => ((currentValue - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+    getRadius = (currentValue, inMin, inMax, outMin, outMax) => {
+        return ((currentValue - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+    };
 }
 
 export default Timer;

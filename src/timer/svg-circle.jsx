@@ -2,7 +2,23 @@ import React from 'react';
 
 export const SVGCircle = ({ radius }) => (
     <svg className="countdown-svg">
-        <path d={describeArc(200, 200, 150, 0, radius)} />
+        <path d={describeArc(200, 200, 150, 0, radius)}>
+            <animate attributeName="stroke-dashoffset" dur="6s" to="0" />
+        </path>
+        {/* <path
+            style={{
+                stroke: '#fff',
+                strokeDasharray: 820,
+                strokeDashoffset: 820,
+                strokeWidth: 10,
+                fill: 'transparent'
+            }}
+            d="M150,150
+                m0,-130
+               a 130,130 0 0,1 0,260
+               a 130,130 0 0,1 0,-260">
+            <animate attributeName="stroke-dashoffset" dur="6s" to="0" />
+        </path> */}
     </svg>
 );
 
